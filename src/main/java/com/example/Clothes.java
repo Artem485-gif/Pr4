@@ -14,15 +14,35 @@ public class Clothes {
     private int quantity;
 
     /**
-     * Створює об'єкт одягу.
+     * Створює об'єкт одягу з перевіркою параметрів.
+     *
+     * @param name назва одягу
+     * @param size розмір одягу
+     * @param price ціна одягу
+     * @param brand бренд одягу
+     * @param quantity кількість одиниць
      */
     public Clothes(String name, String size, double price,
                    String brand, int quantity) {
-        this.name = name;
-        this.size = size;
-        this.price = price;
-        this.brand = brand;
-        this.quantity = quantity;
+        setName(name);
+        setSize(size);
+        setPrice(price);
+        setBrand(brand);
+        setQuantity(quantity);
+    }
+
+    /**
+     * Перевіряє текстове значення.
+     *
+     * @param value текст для перевірки
+     * @param field назва поля
+     * @throws IllegalArgumentException якщо текст порожній
+     */
+    private void validateText(String value, String field) {
+        if (value == null || value.trim().isEmpty()) {
+            throw new IllegalArgumentException(
+                    field + " не може бути порожнім!");
+        }
     }
 
     /** @return назву одягу */
@@ -30,9 +50,13 @@ public class Clothes {
         return name;
     }
 
-    /** @param name назва одягу */
+    /**
+     * Встановлює назву одягу.
+     * @param name назва одягу
+     */
     public void setName(String name) {
-        this.name = name;
+        validateText(name, "Назва");
+        this.name = name.trim();
     }
 
     /** @return розмір одягу */
@@ -40,9 +64,13 @@ public class Clothes {
         return size;
     }
 
-    /** @param size розмір одягу */
+    /**
+     * Встановлює розмір одягу.
+     * @param size розмір одягу
+     */
     public void setSize(String size) {
-        this.size = size;
+        validateText(size, "Розмір");
+        this.size = size.trim();
     }
 
     /** @return ціну одягу */
@@ -50,8 +78,15 @@ public class Clothes {
         return price;
     }
 
-    /** @param price ціна одягу */
+    /**
+     * Встановлює ціну одягу.
+     * @param price ціна одягу
+     */
     public void setPrice(double price) {
+        if (!Double.isFinite(price) || price <= 0) {
+            throw new IllegalArgumentException(
+                    "Ціна повинна бути більшою за 0!");
+        }
         this.price = price;
     }
 
@@ -60,9 +95,13 @@ public class Clothes {
         return brand;
     }
 
-    /** @param brand бренд одягу */
+    /**
+     * Встановлює бренд одягу.
+     * @param brand бренд одягу
+     */
     public void setBrand(String brand) {
-        this.brand = brand;
+        validateText(brand, "Бренд");
+        this.brand = brand.trim();
     }
 
     /** @return кількість одиниць */
@@ -70,8 +109,15 @@ public class Clothes {
         return quantity;
     }
 
-    /** @param quantity кількість одиниць */
+    /**
+     * Встановлює кількість одиниць.
+     * @param quantity кількість одиниць
+     */
     public void setQuantity(int quantity) {
+        if (quantity <= 0) {
+            throw new IllegalArgumentException(
+                    "Кількість повинна бути більшою за 0!");
+        }
         this.quantity = quantity;
     }
 
@@ -87,7 +133,11 @@ public class Clothes {
                 '}';
     }
 
-    /** Порівнює два об'єкти одягу. */
+    /**
+     * Порівнює два об'єкти одягу.
+     * @param o об'єкт для порівняння
+     * @return true, якщо об'єкти однакові
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
