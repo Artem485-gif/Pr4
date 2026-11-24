@@ -1,4 +1,4 @@
-﻿package com.example;
+package com.example;
 
 /**
  * Перелік доступних розмірів одягу.
