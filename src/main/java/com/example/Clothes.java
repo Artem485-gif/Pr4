@@ -10,6 +10,7 @@ public class Clothes {
 
     private String name;
     private ClothingSize size;
+    private ClothingType type;
     private double price;
     private String brand;
     private int quantity;
@@ -23,15 +24,31 @@ public class Clothes {
      * Створює об'єкт одягу.
      *
      * @param name назва одягу
-     * @param size розмір одягу
+     * @param size розмір
      * @param price ціна
      * @param brand бренд
      * @param quantity кількість
      */
     public Clothes(String name, ClothingSize size, double price,
                    String brand, int quantity) {
+        this(name, size, ClothingType.T_SHIRT, price, brand, quantity);
+    }
+
+    /**
+     * Створює об'єкт одягу з визначеним типом.
+     *
+     * @param name назва одягу
+     * @param size розмір
+     * @param type тип одягу
+     * @param price ціна
+     * @param brand бренд
+     * @param quantity кількість
+     */
+    public Clothes(String name, ClothingSize size, ClothingType type,
+                   double price, String brand, int quantity) {
         setName(name);
         setSize(size);
+        setType(type);
         setPrice(price);
         setBrand(brand);
         setQuantity(quantity);
@@ -41,8 +58,8 @@ public class Clothes {
     /**
      * Створює об'єкт одягу з текстовим значенням розміру.
      *
-     * @param name назва одягу
-     * @param size розмір одягу
+     * @param name назва
+     * @param size розмір
      * @param price ціна
      * @param brand бренд
      * @param quantity кількість
@@ -53,7 +70,22 @@ public class Clothes {
     }
 
     /**
-     * Перетворює текст на значення перерахування ClothingSize.
+     * Створює об'єкт одягу з текстовими значеннями розміру та типу.
+     *
+     * @param name назва
+     * @param size розмір
+     * @param type тип одягу
+     * @param price ціна
+     * @param brand бренд
+     * @param quantity кількість
+     */
+    public Clothes(String name, String size, ClothingType type,
+                   double price, String brand, int quantity) {
+        this(name, parseSize(size), type, price, brand, quantity);
+    }
+
+    /**
+     * Перетворює текст на значення ClothingSize.
      *
      * @param size текстове позначення розміру
      * @return значення перерахування
@@ -65,8 +97,7 @@ public class Clothes {
         }
 
         try {
-            return ClothingSize.valueOf(
-                    size.trim().toUpperCase());
+            return ClothingSize.valueOf(size.trim().toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(
                     "Невідомий розмір! Доступні: XS, S, M, L, XL, XXL.");
@@ -86,6 +117,7 @@ public class Clothes {
 
         this.name = other.name;
         this.size = other.size;
+        this.type = other.type;
         this.price = other.price;
         this.brand = other.brand;
         this.quantity = other.quantity;
@@ -117,7 +149,7 @@ public class Clothes {
     /**
      * Повертає назву одягу.
      *
-     * @return назва одягу
+     * @return назва
      */
     public String getName() {
         return name;
@@ -126,7 +158,7 @@ public class Clothes {
     /**
      * Встановлює назву одягу.
      *
-     * @param name назва одягу
+     * @param name назва
      */
     public void setName(String name) {
         validateText(name, "Назва");
@@ -134,7 +166,7 @@ public class Clothes {
     }
 
     /**
-     * Повертає розмір одягу у форматі тексту.
+     * Повертає розмір одягу.
      *
      * @return позначення розміру
      */
@@ -143,9 +175,9 @@ public class Clothes {
     }
 
     /**
-     * Повертає розмір одягу як значення enum.
+     * Повертає розмір як значення enum.
      *
-     * @return перерахування ClothingSize
+     * @return ClothingSize
      */
     public ClothingSize getClothingSize() {
         return size;
@@ -154,7 +186,7 @@ public class Clothes {
     /**
      * Встановлює розмір одягу.
      *
-     * @param size розмір одягу
+     * @param size розмір
      */
     public void setSize(ClothingSize size) {
         if (size == null) {
@@ -165,12 +197,34 @@ public class Clothes {
     }
 
     /**
-     * Встановлює розмір одягу з текстового значення.
+     * Встановлює розмір із текстового значення.
      *
-     * @param size текстове позначення розміру
+     * @param size позначення розміру
      */
     public void setSize(String size) {
         this.size = parseSize(size);
+    }
+
+    /**
+     * Повертає тип одягу.
+     *
+     * @return тип одягу
+     */
+    public ClothingType getType() {
+        return type;
+    }
+
+    /**
+     * Встановлює тип одягу.
+     *
+     * @param type тип одягу
+     */
+    public void setType(ClothingType type) {
+        if (type == null) {
+            throw new IllegalArgumentException(
+                    "Тип одягу не може бути null!");
+        }
+        this.type = type;
     }
 
     /**
@@ -246,6 +300,7 @@ public class Clothes {
         return "Clothes{" +
                 "name='" + name + '\'' +
                 ", size=" + size +
+                ", type=" + type +
                 ", price=" + price +
                 ", brand='" + brand + '\'' +
                 ", quantity=" + quantity +
@@ -269,6 +324,7 @@ public class Clothes {
                 && quantity == clothes.quantity
                 && Objects.equals(name, clothes.name)
                 && size == clothes.size
+                && type == clothes.type
                 && Objects.equals(brand, clothes.brand);
     }
 
@@ -279,6 +335,6 @@ public class Clothes {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(name, size, price, brand, quantity);
+        return Objects.hash(name, size, type, price, brand, quantity);
     }
 }
